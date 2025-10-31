@@ -8,14 +8,14 @@ Networking tools.
 
 The function adapts to the type of the input and the type of the receiver.
 
-Sample code which uses an assumed JSON-REST interface to an SQL database:
+Sample code which uses an assumed JSON-REST query interface to an SQL database:
 
 ```swift
-struct SQLRequest: Encodable {
+struct SQLQuery: Encodable {
     let sql: String
 }
 
-struct SQLResponse<Item: Decodable>: Decodable {
+struct SQLResult<Item: Decodable>: Decodable {
     let databaseError: String?
     let items: [Item]?
 }
@@ -27,10 +27,10 @@ struct Person: Decodable {
 
 let url = URL(string: "http://127.0.0.1:8080")!
 
-let sqlRequest = SQLRequest(sql: "SELECT * FROM person WHERE surname LIKE 'Wal%'")
+let query = SQLQuery(sql: "SELECT * FROM person WHERE surname LIKE 'Wal%'")
 
-let result: SQLResponse<Person> = try getUsingJSON(
-    for: sqlRequest,
+let result: SQLResult<Person> = try getUsingJSON(
+    for: query,
     from: url,
     withTimeoutInSeconds: 2.0
 )
