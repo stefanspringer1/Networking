@@ -39,7 +39,7 @@ public func getUsingJSON<RequestData: Encodable, ReponseData: Decodable>(
     
     let result = Result()
     
-    let webTask = session.dataTask(with: request) { serverData, response, error in
+    let networkTask = session.dataTask(with: request) { serverData, response, error in
         
         if let error {
             result.errorText = error.localizedDescription
@@ -56,11 +56,11 @@ public func getUsingJSON<RequestData: Encodable, ReponseData: Decodable>(
         group.leave()
     }
     
-    webTask.resume()
+    networkTask.resume()
     
     let timeoutResult = group.wait(timeout: .now() + timeoutInSeconds)
     if timeoutResult == .timedOut {
-        webTask.cancel()
+        networkTask.cancel()
         throw JSONCommunicationError("\(url): timeout")
     }
     
