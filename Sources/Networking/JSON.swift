@@ -60,6 +60,7 @@ public func getUsingJSON<RequestData: Encodable, ReponseData: Decodable>(
     
     let timeoutResult = group.wait(timeout: .now() + timeoutInSeconds)
     if timeoutResult == .timedOut {
+        webTask.cancel()
         throw JSONCommunicationError("\(url): timeout")
     }
     
